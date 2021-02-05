@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    cloud.google.com/neg: '{"ingress":true}'
+  creationTimestamp: "2021-02-01T18:32:32Z"
+  finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+  labels:
+    app: wordpress-database
+  name: wordpress-database-service
+  namespace: default
+  resourceVersion: "7938"
+  selfLink: /api/v1/namespaces/default/services/wordpress-database-service
+spec:
+  env:
+      - name: clusterIP
+        valueFrom:
+          configMapKeyRef:
+            key: clusterIP
+            name: config
+  externalTrafficPolicy: Cluster
+  ports:
+    - nodePort: 31794
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+  selector:
+    app: wordpress-database
+  sessionAffinity: None
+  type: LoadBalancer

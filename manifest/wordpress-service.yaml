@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: wordpress
+  name: wordpress-service
+  namespace: default
+  resourceVersion: "7938"
+  selfLink: /api/v1/namespaces/default/services/wordpress-database-service
+spec:
+  env:
+      - name: clusterIP
+        valueFrom:
+          configMapKeyRef:
+            key: clusterIP
+            name: config
+  externalTrafficPolicy: Cluster
+  ports:
+    - nodePort: 32735
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: wordpress-service
+  sessionAffinity: None
+  type: LoadBalancer
